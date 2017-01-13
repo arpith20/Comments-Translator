@@ -4,7 +4,7 @@ OBJS =		comments_translator.o translator.o
 
 LIBS =
 
-TARGET =	translate
+TARGET =	bin/translate
 
 $(TARGET):	$(OBJS)
 	$(CXX) -o $(TARGET) $(OBJS) $(LIBS)

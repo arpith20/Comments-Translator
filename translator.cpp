@@ -9,6 +9,7 @@
 #include <iostream>
 #include <array>
 #include <memory>
+#include <string.h>
 #include "translator.h"
 #include "config.h"
 
@@ -19,6 +20,10 @@ translator::translator() {
 	translated = "";
 
 }
+
+/*
+ * Prints usage in case the user dose not pass any arguments
+ */
 
 void translator::usage() {
 	string line;
@@ -34,12 +39,17 @@ void translator::usage() {
 		cout << "Unable to open file";
 }
 
+/*
+ * Translate the file
+ * Parameters: File name to translate
+ * Return value: true if the file is successfully translated
+ */
 bool translator::translate_file(char *file) {
 	cout << " Translating " << file << endl;
 
 	string line;
 	ifstream infile(file);
-	ofstream outfile("result.txt");
+	ofstream outfile((string(file) + string(".temp")));
 	if (infile.is_open()) {
 		while (getline(infile, line)) {
 			line = process(line);
@@ -47,6 +57,11 @@ bool translator::translate_file(char *file) {
 		}
 		infile.close();
 		outfile.close();
+
+		if (save_backup)
+			rename(file, (string(file) + suffix).c_str());
+		rename((string(file) + string(".temp")).c_str(), file);
+		remove((string(file) + string(".temp")).c_str());
 	}
 
 	else
@@ -56,6 +71,9 @@ bool translator::translate_file(char *file) {
 	return true;
 }
 
+/*
+ * Executes the shell command (cmd) and returns the shell output as a string
+ */
 string exec(const char* cmd) {
 	array<char, 128> buffer;
 	string result;
@@ -69,6 +87,11 @@ string exec(const char* cmd) {
 	return result;
 }
 
+/*
+ * Translates the comments (if any) in the line which is given as an input parameter
+ * parameters: Line to translate
+ * Returns: A string with all comments translated
+ */
 string translator::process(string line) {
 	string command;
 	if (multi_line == true) {
