@@ -1,0 +1,5 @@
+This README is currently incomplete. Please ignore.
+This program uses trans to translate strings.
+Give it permissions
+Ensure that it is working
+sudo apt-get install gawk

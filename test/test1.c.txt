@@ -1,0 +1,51 @@
+//none of these are comments (well of course i'm one!)
+#include <iostream>
+no
+no
+
+
+//可爱
+	//可爱
+
+/ /
+
+可爱/* 可爱 */ 可爱
+
+/*
+可爱
+test3
+
+
+*/
+done
+done
+//
+当产生一个GC操作时 //当产生一个GC操作时
+done
+
+//translate only if inside comments
+当产生一个GC操作时/* 可爱 */当产生一个GC操作时
+
+可爱
+
+/*
+*add by ninja
+*可爱
+*/
+
+/**************************************************************************************
+ *当产生一个GC操作时，将这个结构挂在相应的channel上，等待channel空闲时，发出GC操作命令
+ 可爱
+***************************************************************************************/
+struct gc_operation{          
+	unsigned int chip;
+	unsigned int die;
+	unsigned int plane;
+	unsigned int block;           //该参数只在可中断的gc函数中使用（gc_interrupt），用来记录已近找出来的目标块号
+	unsigned int page;            //该参数只在可中断的gc函数中使用（gc_interrupt），用来记录已经完成的数据迁移的页号
+	unsigned int state;           //记录当前gc请求的状态
+	unsigned int priority;        //记录该gc操作的优先级，1表示不可中断，0表示可中断（软阈值产生的gc请求）
+	struct gc_operation *next_node;
+};
+
+可爱
