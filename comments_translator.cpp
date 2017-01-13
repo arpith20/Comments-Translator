@@ -19,9 +19,11 @@ int main(int argc, char *argv[]) {
 		t.usage();
 		return EXIT_FAILURE;
 	}
+#pragma omp parallel for
 	for (int i = 1; i < argc; i++) {
+		translator ti;
 		cout<<i<<". ";
-		if(!t.translate_file(argv[i])){
+		if(!ti.translate_file(argv[i])){
 			cout<<"Translating "<<argv[i]<<" failed"<<endl;
 		}
 	}
