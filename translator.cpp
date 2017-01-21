@@ -98,9 +98,9 @@ string translator::process(string line) {
 
 		cout << "Multi line: " << line << "\n";
 
-		if (line.find("*/") != string::npos) {
+		if (line.find(multi_line_comment_end) != string::npos) {
 			multi_line = false;
-			translated = line.substr(0, line.find("*/"));
+			translated = line.substr(0, line.find(multi_line_comment_end));
 		} else
 			translated = line;
 
@@ -109,51 +109,51 @@ string translator::process(string line) {
 		translated = exec(command.c_str());
 		cout << "\t translated: " << translated << endl;
 
-		if (line.find("*/") != string::npos) {
-			line = translated + line.substr(line.find("*/"));
+		if (line.find(multi_line_comment_end) != string::npos) {
+			line = translated + line.substr(line.find(multi_line_comment_end));
 		} else {
 			line = translated;
 		}
 
 		return line;
 	}
-	if (line.find("//") != string::npos && translate_single_line) {
+	if (line.find(single_line_comment) != string::npos && translate_single_line) {
 
 		cout << " Single line: " << line << "\n";
-		translated = line.substr(line.find("//") + 2);
+		translated = line.substr(line.find(single_line_comment) + 2);
 
 		command = path + command_part1 + translated + command_part2;
 
 		translated = exec(command.c_str());
 		cout << "\t Translated: " << translated << endl;
 
-		line = line.substr(0, line.find("//") + 2) + translated;
+		line = line.substr(0, line.find(single_line_comment) + 2) + translated;
 
 		return line;
 	}
-	if (line.find("/*") != string::npos && translate_multi_line) {
+	if (line.find(multi_line_comment_start) != string::npos && translate_multi_line) {
 
 		cout << "Multi line: " << line << "\n";
 		multi_line = true;
 
-		if (line.find("*/") != string::npos) {
+		if (line.find(multi_line_comment_end) != string::npos) {
 			multi_line = false;
-			translated = line.substr(line.find("/*") + 2,
-					(line.find("*/")) - (line.find("/*") + 2));
+			translated = line.substr(line.find(multi_line_comment_start) + 2,
+					(line.find(multi_line_comment_end)) - (line.find(multi_line_comment_start) + 2));
 		} else
-			translated = line.substr(line.find("/*") + 2);
+			translated = line.substr(line.find(multi_line_comment_start) + 2);
 
 		command = path + command_part1 + translated + command_part2;
 
 		translated = exec(command.c_str());
 		cout << "\t translated: " << translated << endl;
 
-		if (line.find("*/") != string::npos) {
-			string line1 = line.substr(0, line.find("/*") + 2);
-			string line2 = line.substr(line.find("*/"));
+		if (line.find(multi_line_comment_end) != string::npos) {
+			string line1 = line.substr(0, line.find(multi_line_comment_start) + 2);
+			string line2 = line.substr(line.find(multi_line_comment_end));
 			line = line1 + translated + line2;
 		} else {
-			line = line.substr(0, line.find("/*") + 2) + translated;
+			line = line.substr(0, line.find(multi_line_comment_start) + 2) + translated;
 		}
 
 		return line;
